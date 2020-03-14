@@ -31,6 +31,42 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
+  <script>
+    function order() {
+      let name = $('#order_name').val()
+      let count = $('#order_count').val()
+      let address = $('#order_address').val()
+      let phone = $('#order_phone').val()
+
+      if (name == '') {
+        alert('이름을 입력해주세요')
+        $('#order_name').focus()
+        return
+      }
+      else if (count == '') {
+        alert('수량을 입력해주세요')
+        $('#order_count').focus()
+        return
+      }
+      else if (address == '') {
+        alert('주소를 입력해주세요')
+        $('#order_address').focus()
+        return
+      }
+      else if (phone==''){
+        alert('휴대폰번호를 입력해주세요')
+        $('#order_phone').focus()
+        return
+      }
+      else if (!isCeellPhone(phone)) {
+        alert('휴대폰번호 입력 형식이 틀립니다. \n 010-0000-0000으로 입력해주세요')
+      }
+      return
+
+    }
+
+  </script>
+
   <style>
     .wrap {
       width: 600px;
@@ -81,15 +117,15 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">주문자성함</span>
       </div>
-      <input type="text" class="form-control" placeholder="이름을 입력해주세요" aria-label="Username"
+      <input id="order_name" type="text" class="form-control" placeholder="이름을 입력해주세요" aria-label="Username"
         aria-describedby="basic-addon1">
     </div>
     <div class="input-group mb-3 mytitle">
       <div class="input-group-prepend">
         <label class="input-group-text" for="inputGroupSelect01">수량</label>
       </div>
-      <select class="custom-select" id="inputGroupSelect01">
-        <option selected>---수량을 선택하세요---</option>
+      <select id="order_count" class="custom-select" id="inputGroupSelect01">
+        <option selected value="">---수량을 선택하세요---</option>
         <option value="1">1개</option>
         <option value="2">2개</option>
         <option value="3">3개</option>
@@ -99,7 +135,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">주소</span>
       </div>
-      <input type="text" class="form-control" placeholder="주소를 입력해주세요" aria-label="Username"
+      <input id="order_address" type="text" class="form-control" placeholder="주소를 입력해주세요" aria-label="Username"
         aria-describedby="basic-addon1">
     </div>
 
@@ -107,9 +143,10 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">핸드폰번호</span>
       </div>
-      <input type="text" class="form-control" placeholder="핸드폰번호를 입력해주세요" aria-label="Username"
-        aria-describedby="basic-addon1">
+      <input id="order_phone" type="text" class="form-control" placeholder="핸드폰번호를 입력해주세요" aria-label="Username"
+        aria-describedby="basic-addon3">
     </div>
+    <div class="order"><button onclick="order()" type="button" class="btn btn-primary">주문하기</button></div>
 
 
   </div>
