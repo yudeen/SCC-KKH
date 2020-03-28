@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <!-- Webpage Title -->
+  <title>4주차 숙제</title>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- 웹폰트 반영 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='mytitle.css') }}">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+   <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 20) {
+                alert('입력은 20자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+    function make_order()
+    {
+      let name = $('#name').val()
+      let count = $('#count').val()
+      let address = $('#address').val()
+      let phone = $('#phone').val()
+
+      if (name == '') {
+        alert('이름을 입력해주세요')
+        $('#name').focus()
+        return
+      }
+      else if (count == '') {
+        alert('구입하실 수량을 입력해주세요')
+        $('#count').focus()
+        return
+      }
+      else if (address == '') {
+        alert('배송받을 주소를 입력해주세요')
+        $('#address').focus()
+        return
+      }
+      else if (phone == '') {
+        alert('연락받을 휴대폰번호를 입력해주세요')
+        $('#phone').focus()
+        return
+      }
+
+       $.ajax({
+                type: "POST",
+                url: "/order",
+                data: { "name_give": name, "count_give": count, "address_give": address, "phone_give" : phone },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+                        $('#name').val('');
+                        $('#count').val('');
+                        $('#address').val('');
+                        $('#phone').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+    }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+
+
+    function listing() {
+
+            $.ajax({
+                type: "GET",
+                url: "/order",
+                data: {},
+
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let rows = response['order'];
+                        for (let i = 0; i < rows.length; i++) {
+                            make_card(rows[i]['name'], rows[i]['count'], rows[i]['address'], rows[i]['phone']);
+                        }
+                    } else {
+                        alert('주문을 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+
+    function make_card(name, count, address, phone) {
+            let temp_html = '<tr style="text-align : center">\
+                                <td>'+ name + '</td>\
+                                <td>'+ count + '</td>\
+                                <td>'+ address + '</td>\
+                                <td>'+ phone + '</td>\
+                            </tr>';
+            $('#orders-box').append(temp_html);
+        }
+
+  </script>
+
+  <style>
+    .wrap {
+      width: 600px;
+      margin: auto;
+    }
+
+    .form-post {
+      max-width: 500px;
+      padding: 2rem;
+      margin: 2rem auto;
+      border-color: #e9ecef;
+      border-radius: 0.3rem;
+      border: solid;
+      display: block;
+    }
+
+    .form-control {
+      display: block;
+      width: 100%;
+      padding: .375rem .75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: .25rem;
+      transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+  <div class="wrap subject">
+    <img class="card-img-top" src="{{url_for('static', filename='iphone11.png')}}" alt="Card image cap" width="160" height="350">
+    <!-- 상품설명 -->
+    <div class="subject">
+      <!-- span tag -->
+      <span style="font-size: x-large; color: green; font-weight: bold;">아이폰 11Pro </span>
+      <span style="font-size: large;">USD1,100 </span>
+      <P> <span style="font-size: medium;"> 사진찍는걸 좋아하면 정말 사야하는 아이폰11 Pro, 근데 가격이 깡패 </span>
+      </P>
+      <P></P>
+    </div>
+    <!-- 상품선택 -->
+    <div class="input-group mb-3 mytitle">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">주문자성함</span>
+      </div>
+      <input id="name" type="text" class="form-control" placeholder="이름을 입력해주세요" aria-label="Username"
+        aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3 mytitle">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">수량</label>
+      </div>
+      <select id="count" class="custom-select" id="inputGroupSelect01">
+        <option selected value="">---수량을 선택하세요---</option>
+        <option value="1">1개</option>
+        <option value="2">2개</option>
+        <option value="3">3개</option>
+      </select>
+    </div>
+    <div class="input-group mb-3 mytitle">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">주소</span>
+      </div>
+      <input id="address" type="text" class="form-control" placeholder="주소를 입력해주세요" aria-label="Username"
+        aria-describedby="basic-addon1">
+    </div>
+
+    <div class="input-group mb-3 mytitle">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">핸드폰번호</span>
+      </div>
+      <input id="phone" type="text" class="form-control" placeholder="핸드폰번호를 입력해주세요" aria-label="Username"
+        aria-describedby="basic-addon3">
+    </div>
+   <div class="order">
+                <button onclick="make_order()" type="button" class="btn btn-primary">주문하기</button>
+            </div>
+    <P></P>
+    <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr style="text-align : center">
+                        <th class="meta_info" scope="col">고객</th>
+                        <th class="meta_info" scope="col">수량</th>
+                        <th class="meta_info" scope="col">주소</th>
+                        <th class="meta_info" scope="col">전화</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr style="text-align : center">
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                      <td>@mdo</td>
+                    </tr>
+                </tbody>
+
+
+  </div>
+
+
+
+
+</body>
+
+</html>
