@@ -26,7 +26,7 @@ def listing():
     if len(article)==0:
         return jsonify({"result" : "empty"})
     else : 
-        return jsonify({'result': 'success', 'msg': 'GET 연결되었습니다!', 
+        return jsonify({'result': 'success', 'msg': '[GET] 저장 정보를 가져왔습니다!', 
                     'data' : article})
     #전체가 dictionary(=json형태) base로 
 
@@ -85,7 +85,7 @@ def saving():
 
     db.article.insert_one(item)
 
-    return jsonify({'result': 'success', 'msg': 'POST 연결되었습니다!'})
+    return jsonify({'result': 'success', 'msg': '[Post] 기사를 저장하였습니다!'})
 
 
 if __name__ == '__main__':

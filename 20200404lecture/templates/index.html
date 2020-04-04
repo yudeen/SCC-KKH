@@ -89,6 +89,7 @@
             let myComment = $(`#posting-comment`).val()
 
 
+
             $.ajax({
                 type: "POST",
                 url: "/memo",
@@ -96,9 +97,13 @@
                 success: function (response) { // 성공하면
                     if (response['result'] == 'success') {
                         alert(response['msg']);
+                        $('#cards-box').html('');
+                        listing();
                     }
                 }
             })
+
+           
         }
     </script>
 
